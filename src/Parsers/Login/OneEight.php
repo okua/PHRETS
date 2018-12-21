@@ -12,6 +12,8 @@ class OneEight extends OneX
         if (strpos($line, '=') !== false) {
             @list($name, $value) = explode("=", $line, 2);
         }
+        $name = trim($name);
+        $value = trim($value);
 
         if ($name == 'Info') {
             if ($value) {

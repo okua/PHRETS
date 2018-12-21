@@ -36,9 +36,12 @@ class Multiple
         $body = preg_replace('/^(.*?)\r\n--' . $boundary . '\r\n/', "\r\n--{$boundary}\r\n", $body);
         // make the last one look like the rest for easier parsing
         $body = preg_replace('/\r\n--' . $boundary . '--/', "\r\n--{$boundary}\r\n", $body);
+        $body = preg_replace('~\R~u', "\r\n", $body);
 
         // cut up the message
         $multi_parts = explode("\r\n--{$boundary}\r\n", $body);
+        dump($boundary);
+        dump($multi_parts);
         // take off anything that happens before the first boundary (the preamble)
         array_shift($multi_parts);
         // take off anything after the last boundary (the epilogue)
@@ -49,7 +52,7 @@ class Multiple
         // go through each part of the multipart message
         foreach ($multi_parts as $part) {
             // get Guzzle to parse this multipart section as if it's a whole HTTP message
-            $parts = \GuzzleHttp\Psr7\parse_response("HTTP/1.1 200 OK\r\n" . $part . "\r\n");
+            $parts = \GuzzleHttp\Psr7\parse_response("HTTP/1.1 200 OK\r\n" . $part);
 
             // now throw this single faked message through the Single GetObject response parser
             $single = new PHRETSResponse(new Response($parts->getStatusCode(), $parts->getHeaders(), (string)$parts->getBody()));
@@ -58,7 +61,7 @@ class Multiple
             // add information about this multipart to the returned collection
             $collection->push($obj);
         }
-
+        dump($collection);
         return $collection;
     }
 }
