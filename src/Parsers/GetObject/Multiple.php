@@ -40,8 +40,6 @@ class Multiple
 
         // cut up the message
         $multi_parts = explode("\r\n--{$boundary}\r\n", $body);
-        dump($boundary);
-        dump($multi_parts);
         // take off anything that happens before the first boundary (the preamble)
         array_shift($multi_parts);
         // take off anything after the last boundary (the epilogue)
@@ -61,7 +59,6 @@ class Multiple
             // add information about this multipart to the returned collection
             $collection->push($obj);
         }
-        dump($collection);
         return $collection;
     }
 }
