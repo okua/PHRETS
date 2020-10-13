@@ -7,12 +7,18 @@
     "rets",
     "mls"
   ],
-  "homepage": "http://github.com/troydavisson/PHRETS",
+  "homepage": "https://github.com/okua/PHRETS",
   "authors": [
     {
       "name": "Troy Davisson",
       "email": "troy.davisson@gmail.com",
       "homepage": "http://troda.com",
+      "role": "Developer"
+    },
+    {
+      "name": "Oleksii Komarov",
+      "email": "ok@olex.dev",
+      "homepage": "https://olex.dev",
       "role": "Developer"
     }
   ],

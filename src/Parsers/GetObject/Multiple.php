@@ -49,6 +49,8 @@ class Multiple
 
         // go through each part of the multipart message
         foreach ($multi_parts as $part) {
+            // help bad responses be more multipart compliant
+            $part = $part . "\r\n";
             // get Guzzle to parse this multipart section as if it's a whole HTTP message
             $parts = \GuzzleHttp\Psr7\parse_response("HTTP/1.1 200 OK\r\n" . $part);
 
