@@ -1,6 +1,8 @@
 <?php
 
 use GuzzleHttp\Middleware;
+use \PHRETS\Exceptions\RETSException;
+use \PHRETS\Exceptions\CapabilityUnavailable;
 
 class SessionIntegrationTest extends BaseIntegration
 {
@@ -24,6 +26,7 @@ class SessionIntegrationTest extends BaseIntegration
      * **/
     public function it_throws_an_exception_when_making_a_bad_request()
     {
+        $this->expectException(RETSException::class);
         $this->session->Login();
 
         $this->session->Search('Property', 'Z', '*'); // no such class by that name
@@ -35,7 +38,7 @@ class SessionIntegrationTest extends BaseIntegration
         $this->session->Login();
 
         // find something in the login response that we can count on
-        $this->assertRegExp('/NotificationFeed/', $this->session->getLastResponse());
+        $this->assertMatchesRegularExpression('/NotificationFeed/', $this->session->getLastResponse());
     }
 
     /** @test **/
@@ -53,15 +56,15 @@ class SessionIntegrationTest extends BaseIntegration
 
         // this endpoint doesn't actually exist, but the response is mocked, so...
         $config->setLoginUrl('http://retsgw.flexmls.com/action/rets2_1/Login')
-                ->setUsername(getenv('PHRETS_TESTING_USERNAME'))
-                ->setPassword(getenv('PHRETS_TESTING_PASSWORD'))
-                ->setRetsVersion('1.7.2');
+            ->setUsername(getenv('PHRETS_TESTING_USERNAME'))
+            ->setPassword(getenv('PHRETS_TESTING_PASSWORD'))
+            ->setRetsVersion('1.7.2');
 
         $session = new \PHRETS\Session($config);
         $bulletin = $session->Login();
 
         $this->assertInstanceOf('\PHRETS\Models\Bulletin', $bulletin);
-        $this->assertRegExp('/found an Action/', $bulletin->getBody());
+        $this->assertMatchesRegularExpression('/found an Action/', $bulletin->getBody());
     }
 
     /** @test **/
@@ -71,10 +74,10 @@ class SessionIntegrationTest extends BaseIntegration
 
         // this endpoint doesn't actually exist, but the response is mocked, so...
         $config->setLoginUrl('http://retsgw.flexmls.com/rets2_1/Login')
-                ->setUsername(getenv('PHRETS_TESTING_USERNAME'))
-                ->setPassword(getenv('PHRETS_TESTING_PASSWORD'))
-                ->setRetsVersion('1.7.2')
-                ->setOption('use_post_method', true);
+            ->setUsername(getenv('PHRETS_TESTING_USERNAME'))
+            ->setPassword(getenv('PHRETS_TESTING_PASSWORD'))
+            ->setRetsVersion('1.7.2')
+            ->setOption('use_post_method', true);
 
         $session = new \PHRETS\Session($config);
         $session->Login();
@@ -103,11 +106,11 @@ class SessionIntegrationTest extends BaseIntegration
         $config = new \PHRETS\Configuration;
 
         $config->setLoginUrl('http://retsgw.flexmls.com/rets2_1/Login')
-                ->setUsername(getenv('PHRETS_TESTING_USERNAME'))
-                ->setPassword(getenv('PHRETS_TESTING_PASSWORD'))
-                ->setUserAgent('PHRETS/2.0')
-                ->setUserAgentPassword('bogus_password')
-                ->setRetsVersion('1.7.2');
+            ->setUsername(getenv('PHRETS_TESTING_USERNAME'))
+            ->setPassword(getenv('PHRETS_TESTING_PASSWORD'))
+            ->setUserAgent('PHRETS/2.0')
+            ->setUserAgentPassword('bogus_password')
+            ->setRetsVersion('1.7.2');
 
         $session = new \PHRETS\Session($config);
 
@@ -124,7 +127,7 @@ class SessionIntegrationTest extends BaseIntegration
 
         $this->assertCount(1, $container);
         $last_request = $container[count($container) - 1];
-        $this->assertRegExp('/Digest/', implode(', ', $last_request['request']->getHeader('RETS-UA-Authorization')));
+        $this->assertMatchesRegularExpression('/Digest/', implode(', ', $last_request['request']->getHeader('RETS-UA-Authorization')));
         $this->assertArrayHasKey('Accept', $last_request['request']->getHeaders());
     }
 
@@ -134,13 +137,14 @@ class SessionIntegrationTest extends BaseIntegration
      **/
     public function it_doesnt_allow_requests_to_unsupported_capabilities()
     {
+        $this->expectException(CapabilityUnavailable::class);
         $config = new \PHRETS\Configuration;
 
         // fake, mocked endpoint
         $config->setLoginUrl('http://retsgw.flexmls.com/limited/rets2_1/Login')
-                ->setUsername(getenv('PHRETS_TESTING_USERNAME'))
-                ->setPassword(getenv('PHRETS_TESTING_PASSWORD'))
-                ->setRetsVersion('1.7.2');
+            ->setUsername(getenv('PHRETS_TESTING_USERNAME'))
+            ->setPassword(getenv('PHRETS_TESTING_PASSWORD'))
+            ->setRetsVersion('1.7.2');
 
         $session = new \PHRETS\Session($config);
         $session->Login();

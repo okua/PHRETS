@@ -1,5 +1,8 @@
 <?php
 
+use \PHRETS\Exceptions\MetadataNotFound;
+
+
 class GetMetadataIntegrationTest extends BaseIntegration
 {
     /**
@@ -18,9 +21,9 @@ class GetMetadataIntegrationTest extends BaseIntegration
     {
         $config = new \PHRETS\Configuration;
         $config->setLoginUrl('http://retsgw.flexmls.com/rets2_1/Login')
-                ->setUsername(getenv('PHRETS_TESTING_USERNAME'))
-                ->setPassword(getenv('PHRETS_TESTING_PASSWORD'))
-                ->setRetsVersion('1.5');
+            ->setUsername(getenv('PHRETS_TESTING_USERNAME'))
+            ->setPassword(getenv('PHRETS_TESTING_PASSWORD'))
+            ->setRetsVersion('1.5');
 
         $session = new \PHRETS\Session($config);
         $session->Login();
@@ -91,6 +94,7 @@ class GetMetadataIntegrationTest extends BaseIntegration
      * **/
     public function it_errors_with_bad_resource_name()
     {
+        $this->expectException(MetadataNotFound::class);
         $this->session->GetResourcesMetadata('Bogus');
     }
 
@@ -225,9 +229,9 @@ class GetMetadataIntegrationTest extends BaseIntegration
     {
         $config = new \PHRETS\Configuration;
         $config->setLoginUrl('http://retsgw.flexmls.com/lookup/rets2_1/Login')
-                ->setUsername(getenv('PHRETS_TESTING_USERNAME'))
-                ->setPassword(getenv('PHRETS_TESTING_PASSWORD'))
-                ->setRetsVersion('1.5');
+            ->setUsername(getenv('PHRETS_TESTING_USERNAME'))
+            ->setPassword(getenv('PHRETS_TESTING_PASSWORD'))
+            ->setRetsVersion('1.5');
 
         $session = new \PHRETS\Session($config);
         $session->Login();

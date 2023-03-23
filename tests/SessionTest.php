@@ -2,8 +2,11 @@
 
 use PHRETS\Configuration;
 use PHRETS\Session;
+use PHPUnit\Framework\TestCase;
+use \PHRETS\Exceptions\MissingConfiguration;
 
-class SessionTest extends PHPUnit_Framework_TestCase {
+class SessionTest extends TestCase
+{
 
     /** @test **/
     public function it_builds()
@@ -21,6 +24,7 @@ class SessionTest extends PHPUnit_Framework_TestCase {
      */
     public function it_detects_invalid_configurations()
     {
+        $this->expectException(MissingConfiguration::class);
         $c = new Configuration;
         $c->setLoginUrl('http://www.reso.org/login');
 

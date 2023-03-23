@@ -1,8 +1,10 @@
 <?php
 
 use PHRETS\Capabilities;
+use PHPUnit\Framework\TestCase;
 
-class CapabilitiesTest extends PHPUnit_Framework_TestCase {
+class CapabilitiesTest extends TestCase
+{
 
     /** @test **/
     public function it_tracks()
@@ -20,6 +22,7 @@ class CapabilitiesTest extends PHPUnit_Framework_TestCase {
      * **/
     public function it_barfs_when_not_given_enough_information_to_build_absolute_urls()
     {
+        $this->expectException(InvalidArgumentException::class);
         $cpb = new Capabilities;
         $cpb->add('Login', '/rets/Login');
     }

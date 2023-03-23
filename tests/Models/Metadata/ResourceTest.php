@@ -1,8 +1,10 @@
 <?php
 
 use PHRETS\Models\Metadata\Resource;
+use PHPUnit\Framework\TestCase;
 
-class ResourceTest extends PHPUnit_Framework_TestCase {
+class ResourceTest extends TestCase
+{
 
     /** @test **/
     public function it_holds()
@@ -19,6 +21,7 @@ class ResourceTest extends PHPUnit_Framework_TestCase {
      **/
     public function it_doesnt_like_bad_methods()
     {
+        $this->expectException(BadMethodCallException::class);
         $metadata = new Resource;
         $metadata->totallyBogus();
     }
@@ -29,7 +32,7 @@ class ResourceTest extends PHPUnit_Framework_TestCase {
         $metadata = new Resource;
         $this->assertNull($metadata->getSomethingFake());
     }
-    
+
     /** @test **/
     public function it_works_like_an_array()
     {
@@ -39,7 +42,7 @@ class ResourceTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue(isset($metadata['Description']));
         $this->assertSame('Test Description', $metadata['Description']);
     }
-    
+
     /** @test **/
     public function it_sets_like_an_array()
     {

@@ -1,4 +1,6 @@
-<?php namespace PHRETS\Parsers\GetObject;
+<?php
+
+namespace PHRETS\Parsers\GetObject;
 
 use GuzzleHttp\Psr7\Response;
 use PHRETS\Http\Response as PHRETSResponse;
@@ -52,7 +54,7 @@ class Multiple
             // help bad responses be more multipart compliant
             $part = $part . "\r\n";
             // get Guzzle to parse this multipart section as if it's a whole HTTP message
-            $parts = \GuzzleHttp\Psr7\parse_response("HTTP/1.1 200 OK\r\n" . $part);
+            $parts = \GuzzleHttp\Psr7\Message::parseResponse("HTTP/1.1 200 OK\r\n" . $part . "\r\n");
 
             // now throw this single faked message through the Single GetObject response parser
             $single = new PHRETSResponse(new Response($parts->getStatusCode(), $parts->getHeaders(), (string)$parts->getBody()));
