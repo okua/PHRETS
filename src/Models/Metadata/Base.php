@@ -1,4 +1,8 @@
-<?php namespace PHRETS\Models\Metadata;
+<?php
+
+namespace PHRETS\Models\Metadata;
+
+use Illuminate\Support\Arr;
 
 abstract class Base implements \ArrayAccess
 {
@@ -47,7 +51,7 @@ abstract class Base implements \ArrayAccess
         } elseif ($action === 'get') {
             foreach (array_merge($this->getXmlElements(), $this->getXmlAttributes()) as $attr) {
                 if (strtolower('get' . $attr) == $name) {
-                    return \array_get($this->values, $attr);
+                    return Arr::get($this->values, $attr);
                 }
             }
             return null;
@@ -107,7 +111,7 @@ abstract class Base implements \ArrayAccess
     {
         foreach (array_merge($this->getXmlElements(), $this->getXmlAttributes()) as $attr) {
             if (strtolower($attr) == strtolower($offset)) {
-                return \array_get($this->values, $attr);
+                return Arr::get($this->values, $attr);
             }
         }
         return null;

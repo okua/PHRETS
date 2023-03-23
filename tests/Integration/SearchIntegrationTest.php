@@ -1,5 +1,7 @@
 <?php
 
+use \PHRETS\Exceptions\AutomaticPaginationError;
+
 class SearchIntegrationTest extends BaseIntegration
 {
     /** @test */
@@ -125,6 +127,7 @@ class SearchIntegrationTest extends BaseIntegration
      * **/
     public function it_detects_broken_pagination()
     {
+        $this->expectException(AutomaticPaginationError::class);
         $this->session->Login();
 
         // this is manually faked in the fixture

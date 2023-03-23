@@ -1,4 +1,7 @@
-<?php namespace PHRETS\Models;
+<?php
+
+namespace PHRETS\Models;
+
 use Illuminate\Support\Arr;
 
 

@@ -1,13 +1,15 @@
 <?php
 
 use PHRETS\Parsers\Login\OneEight;
+use PHPUnit\Framework\TestCase;
 
-class OneEightTest extends PHPUnit_Framework_TestCase {
+class OneEightTest extends TestCase
+{
 
     /** @var OneEight */
     protected $parser;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->parser = new OneEight;
         $this->parser->parse("
