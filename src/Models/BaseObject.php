@@ -1,4 +1,6 @@
-<?php namespace PHRETS\Models;
+<?php
+
+namespace PHRETS\Models;
 
 class BaseObject
 {
@@ -12,6 +14,50 @@ class BaseObject
     protected $content;
     protected $preferred;
     protected $error;
+    protected $headers = [];
+
+
+    /**
+     * Set a specific header.
+     *
+     * @param string $name
+     * @param string $value
+     */
+    public function setHeader($name, $value)
+    {
+        $this->headers[$name] = $value;
+    }
+
+    /**
+     * Set multiple headers.
+     *
+     * @param array $headers
+     */
+    public function setHeaders(array $headers)
+    {
+        $this->headers = $headers;
+    }
+
+    /**
+     * Get all headers.
+     *
+     * @return array
+     */
+    public function getHeaders()
+    {
+        return $this->headers;
+    }
+
+    /**
+     * Get a specific header by name.
+     *
+     * @param string $name
+     * @return string|null
+     */
+    public function getHeader($name)
+    {
+        return $this->headers[$name] ?? null;
+    }
 
     /**
      * @return mixed
